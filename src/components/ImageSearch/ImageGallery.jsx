@@ -8,7 +8,9 @@ class ImageGallery extends Component {
     console.log(hits);
     return (
       <ul className="ImageGallery">
-        <ImageGalleryItem hits={hits} />
+        {hits.map(el => (
+          <ImageGalleryItem el={el} />
+        ))}
       </ul>
     );
   }

@@ -4,7 +4,7 @@ import '../styles.css';
 class ButtonLoad extends Component {
   render() {
     return (
-      <button className="Button" type="submit">
+      <button onClick={this.props} className="Button" type="submit">
         Load more
       </button>
     );

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../styles.css';
 import PropTypes from 'prop-types';
 import ImageGallery from './ImageGallery';
+import ButtonLoad from './Button';
 // import ImageGalleryItem from './ImageSearch/ImageGalleryItem';
 // import ButtonLoad from './ImageSearch/Button';
 
@@ -20,7 +21,8 @@ class SearchBar extends Component {
   }
 
   async componentDidUpdate(prevState, prevProps) {
-    if (prevState.limit === this.state.limit) {
+    const { limit, search } = this.state;
+    if (prevState.limit === limit) {
       this.fetchPhotos();
       console.log('componentDidUpdate');
     }
@@ -48,6 +50,10 @@ class SearchBar extends Component {
     } catch (error) {
       console.log('blad w feach');
     }
+  };
+
+  addExtraImg = el => {
+    this.setState(prevState => ({ ...prevState, limit: prevState.limit + 10 }));
   };
 
   render() {
@@ -78,6 +84,7 @@ class SearchBar extends Component {
           </form>
         </header>
         <ImageGallery hits={hits} />
+        <ButtonLoad addExtraImg={this.addExtraImg} />
       </div>
     );
   }
