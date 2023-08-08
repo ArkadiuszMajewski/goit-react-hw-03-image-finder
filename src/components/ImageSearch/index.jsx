@@ -17,7 +17,7 @@ class SearchBar extends Component {
 
   async componentDidMount() {
     await this.fetchPhotos();
-    console.log('componentDidMount');
+    // console.log('componentDidMount');
   }
 
   async componentDidUpdate(prevState, prevProps) {
@@ -58,7 +58,7 @@ class SearchBar extends Component {
 
   render() {
     const { hits } = this.state;
-    console.log(hits);
+    // console.log(hits);
     return (
       <div>
         <header onSubmit={this.handleSubbmit} className="Searchbar">
