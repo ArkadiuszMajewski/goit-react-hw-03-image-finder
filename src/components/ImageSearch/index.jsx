@@ -14,6 +14,18 @@ class SearchBar extends Component {
     limit: '12',
   };
 
+  async componentDidMount() {
+    await this.fetchPhotos();
+    console.log('componentDidMount');
+  }
+
+  async componentDidUpdate(prevState, prevProps) {
+    if (prevState.limit === this.state.limit) {
+      this.fetchPhotos();
+      console.log('componentDidUpdate');
+    }
+  }
+
   handleChange = evt => {
     const { name, value } = evt.currentTarget;
     this.setState({ [name]: value });

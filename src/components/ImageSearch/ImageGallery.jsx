@@ -5,6 +5,7 @@ import '../styles.css';
 class ImageGallery extends Component {
   render() {
     const { hits } = this.props;
+    console.log(hits);
     return (
       <ul className="ImageGallery">
         <ImageGalleryItem hits={hits} />
