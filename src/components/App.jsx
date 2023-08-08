@@ -1,16 +1,16 @@
+import SearchBar from './SearchBar/index';
+import ImageGallery from './ImageGallery/index';
+import ImageGalleryItem from './ImageGalleryItem/index';
+import ButtonLoad from './ButtonLoad/index';
+import './styles.css';
+
 export const App = () => {
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
+    <div className="App">
+      <SearchBar />
+      <ImageGallery />
+      <ImageGalleryItem />
+      <ButtonLoad />
     </div>
   );
 };
