@@ -3,7 +3,9 @@ import '../styles.css';
 import PropTypes from 'prop-types';
 import ImageGallery from './ImageGallery';
 import ButtonLoad from './Button';
-import { Audio } from 'react-loader-spinner';
+import Loader from './loader';
+import Modal from './Modal';
+
 // import ImageGalleryItem from './ImageSearch/ImageGalleryItem';
 // import ButtonLoad from './ImageSearch/Button';
 
@@ -14,12 +16,15 @@ class SearchBar extends Component {
     page: 1,
     key: '36819144-796cb24dbda7f1c215c0374a0',
     limit: 12,
+    isLoading: false,
+    modalIsOpen: false,
+    totalHits: 1,
   };
 
-  async componentDidMount() {
-    await this.fetchPhotos();
-    // console.log('componentDidMount');
-  }
+  // async componentDidMount() {
+  //   await this.fetchPhotos();
+  //   // console.log('componentDidMount');
+  // }
 
   handleSubbmit = evt => {
     evt.preventDefault();
@@ -27,23 +32,21 @@ class SearchBar extends Component {
       alert('Nothing');
     }
     this.fetchPhotos();
-    console.log(this.state.hits);
-    console.log(this.state.limit);
+    this.setState(page => ({ [page]: 1 }));
+    // console.log(this.state.hits);
+    // console.log(this.state.limit);
   };
 
   async componentDidUpdate(prevProps, prevState) {
-    //jezeli sie zmieni state lub dostaniemy nowe propsy ta funkcja jest odpalana
-    // console.log('update per limit')
-    //10 - prevState -> aktualny state -> 10
     if (prevState.limit !== this.state.limit) {
-      console.log('aktualizuj mi dane i pobieraj fetcha');
+      // console.log('aktualizuj mi dane i pobieraj fetcha');
       this.fetchPhotos();
     }
   }
 
   handleChange = evt => {
-    const { name, value } = evt.currentTarget;
-    this.setState({ [name]: value });
+    const { name, value, page } = evt.currentTarget;
+    this.setState({ [name]: value, [page]: 1 });
   };
 
   addExtraImg = () => {
@@ -51,17 +54,19 @@ class SearchBar extends Component {
       ...prevState,
       limit: prevState.limit + 10,
     }));
-    console.log(this.state.limit);
-
+    console.log(this.state.totalHits);
+    if (this.state.limit > this.state.totalHits) {
+      return alert('No more found');
+    }
     this.fetchPhotos();
   };
 
   componentWillUnmount() {
-    // console.log('kiedy zamykam moj modal wyczysc moj state z todos')
     this.setState({ hits: [] });
   }
 
   fetchPhotos = async () => {
+    this.setState({ isLoading: true });
     try {
       const { search, page, key, limit } = this.state;
       const response = await fetch(
@@ -72,9 +77,18 @@ class SearchBar extends Component {
       if (data.total === 0) {
         alert('Nofing was found');
       }
-      this.setState(prevState => ({ ...prevState, hits: data.hits }));
+      // console.log(data);
+
+      this.setState(prevState => ({
+        ...prevState,
+        hits: data.hits,
+        totalHits: data.totalHits,
+      }));
     } catch (error) {
       console.log('blad w fetchPhotos');
+    } finally {
+      this.setState({ isLoading: false });
+      // console.log(this.state.isLoading);
     }
   };
 
@@ -90,7 +104,10 @@ class SearchBar extends Component {
               type="submit"
               className="SearchForm-button"
             >
-              <span className="SearchForm-button-label">Search</span>
+              <span
+                className="SearchForm-button- 
+               label"
+              ></span>
             </button>
 
             <input
@@ -106,7 +123,10 @@ class SearchBar extends Component {
           </form>
         </header>
         <ImageGallery hits={hits} />
+        {this.state.isLoading && <Loader />}
+
         <ButtonLoad addExtraImg={this.addExtraImg} />
+        {this.state.modalIsOpen && <Modal />}
       </div>
     );
   }
