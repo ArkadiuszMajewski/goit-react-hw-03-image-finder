@@ -12,7 +12,7 @@ class SearchBar extends Component {
     search: '',
     page: '1',
     key: '36819144-796cb24dbda7f1c215c0374a0',
-    limit: '12',
+    limit: 12,
   };
 
   async componentDidMount() {
@@ -20,13 +20,13 @@ class SearchBar extends Component {
     console.log('componentDidMount');
   }
 
-  // async componentDidUpdate(prevState, prevProps) {
-  //   const { limit, search } = this.state;
-  //   if (prevState.limit === limit) {
-  //     this.fetchPhotos();
-  //     console.log('componentDidUpdate');
-  //   }
-  // }
+  async componentDidUpdate(prevState, prevProps) {
+    const { limit, search } = this.state;
+    if (prevState.limit === limit) {
+      this.fetchPhotos();
+      console.log('componentDidUpdate');
+    }
+  }
 
   handleChange = evt => {
     const { name, value } = evt.currentTarget;
@@ -37,6 +37,13 @@ class SearchBar extends Component {
     evt.preventDefault();
     this.fetchPhotos();
     console.log(this.state.hits);
+    console.log(this.state.limit);
+  };
+
+  addExtraImg = el => {
+    this.setState(prevState => ({ ...prevState, limit: prevState.limit + 10 }));
+    console.log(this.state.limit);
+    this.fetchPhotos();
   };
 
   fetchPhotos = async () => {
@@ -50,10 +57,6 @@ class SearchBar extends Component {
     } catch (error) {
       console.log('blad w feach');
     }
-  };
-
-  addExtraImg = el => {
-    this.setState(prevState => ({ ...prevState, limit: prevState.limit + 10 }));
   };
 
   render() {
