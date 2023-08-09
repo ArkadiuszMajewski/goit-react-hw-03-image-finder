@@ -17,20 +17,20 @@ class SearchBar extends Component {
 
   async componentDidMount() {
     await this.fetchPhotos();
-    console.log('componentDidMount');
+    // console.log('componentDidMount');
   }
 
   async componentDidUpdate(prevState, prevProps) {
     const { limit, search } = this.state;
     if (prevState.limit === limit) {
       this.fetchPhotos();
-      console.log('componentDidUpdate');
+      // console.log('componentDidUpdate');
     }
   }
 
   handleChange = evt => {
     const { name, value } = evt.currentTarget;
-    this.setState({ [name]: value });
+    this.setState(prevState => ({ ...prevState, [name]: value }));
   };
 
   handleSubbmit = evt => {
@@ -41,7 +41,10 @@ class SearchBar extends Component {
   };
 
   addExtraImg = el => {
-    this.setState(prevState => ({ ...prevState, limit: prevState.limit + 10 }));
+    this.setState(prevState => ({
+      ...prevState,
+      limit: prevState.limit + 10,
+    }));
     console.log(this.state.limit);
     this.fetchPhotos();
   };
@@ -53,6 +56,10 @@ class SearchBar extends Component {
         `https://pixabay.com/api/?q=${search}&page=${page}&key=${key}&image_type=photo&orientation=horizontal&per_page=${limit}`
       );
       const data = await response.json();
+      console.log(data);
+      if (data.total === 0) {
+        alert('Nofing was found');
+      }
       this.setState(prevState => ({ ...prevState, hits: data.hits }));
     } catch (error) {
       console.log('blad w feach');
