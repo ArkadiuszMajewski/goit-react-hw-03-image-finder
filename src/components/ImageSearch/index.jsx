@@ -50,15 +50,18 @@ class SearchBar extends Component {
   };
 
   addExtraImg = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      limit: prevState.limit + 10,
-    }));
-    console.log(this.state.totalHits);
+    if (this.state.search !== '') {
+      // this.fetchPhotos();
+      this.setState(prevState => ({
+        ...prevState,
+        limit: prevState.limit + 10,
+      }));
+    }
+
+    // console.log(this.state.totalHits);
     if (this.state.limit > this.state.totalHits) {
       return alert('No more found');
     }
-    this.fetchPhotos();
   };
 
   componentWillUnmount() {
