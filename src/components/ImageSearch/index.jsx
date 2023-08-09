@@ -17,16 +17,16 @@ class SearchBar extends Component {
 
   async componentDidMount() {
     await this.fetchPhotos();
-    // console.log('componentDidMount');
+    console.log('componentDidMount');
   }
 
-  async componentDidUpdate(prevState, prevProps) {
-    const { limit, search } = this.state;
-    if (prevState.limit === limit) {
-      this.fetchPhotos();
-      console.log('componentDidUpdate');
-    }
-  }
+  // async componentDidUpdate(prevState, prevProps) {
+  //   const { limit, search } = this.state;
+  //   if (prevState.limit === limit) {
+  //     this.fetchPhotos();
+  //     console.log('componentDidUpdate');
+  //   }
+  // }
 
   handleChange = evt => {
     const { name, value } = evt.currentTarget;
